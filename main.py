@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def preprocess(raw_data):
@@ -43,7 +44,7 @@ def main():
     data_path = os.path.join("data", "train.csv")
     raw_data = pd.read_csv(data_path)
     train_data = preprocess(raw_data)
-
+    print(train_data.shape)
 
 if __name__ == "__main__":
     main()
