@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.linear_model import LinearRegression
+
 
 def preprocess(raw_data):
     # gestire i NaNs (not a number)
@@ -29,11 +31,22 @@ def preprocess(raw_data):
     for colonna in colonne_numeriche:
         risultato.append((colonna - colonna.min()) / (colonna.max() - colonna.min()))
     risultato = np.array(risultato)
-    return risultato 
+    return risultato
 
 
-def train():
-    pass
+def train(model, X, y):
+    model.fit(X, y)
+    # mean square error (MSE) mean(||y_pred - y||^2)
+    # mean absolute error (MAE) mean(|y_pred - y|)
+    y_pred = model.predict(X)
+    mse = np.mean(((y - y_pred) ** 2))
+    mae = np.mean(np.abs(y_pred - y))
+    print(f"{mse=:.4f} {mae=:.4f}")
+    plt.scatter(np.arange(len(y)), y, label="real")
+    plt.scatter(np.arange(len(y)), y_pred, label="predicted")
+    plt.legend()
+    plt.show()
+    return mse, mae
 
 
 def test():
@@ -44,7 +57,10 @@ def main():
     data_path = os.path.join("data", "train.csv")
     raw_data = pd.read_csv(data_path)
     train_data = preprocess(raw_data)
-    print(train_data.shape)
+    X, y = train_data[:-1].T, train_data[-1]
+    model = LinearRegression()
+    train(model, X, y)
+
 
 if __name__ == "__main__":
     main()
