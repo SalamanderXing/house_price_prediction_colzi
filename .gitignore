@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 cifar10/data
+cifar10/checkpoint.pt
 
 # C extensions
 *.so
