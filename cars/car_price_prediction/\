@@ -1,0 +1,17 @@
+import pandas as pd
+import numpy as np
+
+def a():
+    return 'ciao'
+
+def main():
+    cars_data = pd.read_csv('car data.csv')
+    car_details = pd.read_csv('Car details v3.csv')
+    print(f"{cars_data.columns=} {len(cars_data)=}")
+    print(f"{car_details.columns=} {len(car_details)=}")
+    ciao = a()
+    print(ciao)
+
+
+if __name__ == '__main__':
+    main()
