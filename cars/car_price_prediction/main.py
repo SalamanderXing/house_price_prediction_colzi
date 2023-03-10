@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import ipdb
-
+from sklearn.linear_model import LinearRegression
 
 """
 
@@ -70,9 +70,6 @@ def preprocess(dataset: pd.DataFrame):
     assert norm_values.min() == 0.0, "Normalization error."
     return norm_values, y
 
-def train():
-    pass
-
 
 def test():
     pass
@@ -80,13 +77,37 @@ def test():
 
 def main():
     car_details = pd.read_csv("Car details v3.csv")
-    # print(f"{car_details.columns=} {len(car_details)=}")
-    preprocessed, y = preprocess(car_details)
-    # suddividere i nostri dati in train e test set
-    # fittare qualche modello
-    # e testare qualche modello
-    # guardare le metriche
+    x, y = preprocess(car_details)
+    x = x.T
 
+    # suddividere i nostri dati in train e test set_tracej
+    train_size = int(len(x) * 0.8)
+    rand_indices = np.arange(len(x))
+    np.random.shuffle(rand_indices)
+    train_indices = rand_indices[:train_size]
+    test_indices = rand_indices[train_size:]
+    x_train = x[train_indices]
+    x_test = x[test_indices]
+    y_train = y[train_indices]
+    y_test = y[test_indices]
+
+    # creare il modello 
+    model = LinearRegression()
+
+    # fittare qualche modello
+    model.fit(x_train, y_train)
+
+    # e testare qualche modello
+    y_pred = model.predict(x_test)
+
+    # guardare le metriche
+    # MAE
+    # MSE
+    # ||y_pred - y_test||**2
+    mse = np.mean((y_pred - y_test)**2)
+    mae = np.mean(np.abs(y_pred - y_test))
+    print(f"{mse=}")
+    print(f"{mae=}")
 
 if __name__ == "__main__":
     main()
